@@ -1,4 +1,4 @@
-# HEIG-VD DAI Course - Code examples
+# HEIG-VD DAI Course - Solutions
 
 This repository contains the solutions to the practical contents related to the
 [main repository](https://github.com/heig-vd-dai-course/heig-vd-dai-course).
