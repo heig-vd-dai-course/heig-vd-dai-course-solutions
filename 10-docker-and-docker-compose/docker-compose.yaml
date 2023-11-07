@@ -1,0 +1,15 @@
+services:
+  filebrowser:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        FILEBROWSER_VERSION: 2.25.0-r1
+    image: ghcr.io/ludelafo/my-custom-dockerfile:v3.0
+    # Only necessary on Apple Silicon
+    platform: linux/amd64
+    ports:
+      - "8080:5001"
+    volumes:
+      - ./my-config:/app/config
+      - ./my-data:/app/data
