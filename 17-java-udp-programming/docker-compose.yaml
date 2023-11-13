@@ -1,0 +1,93 @@
+services:
+  unicast-server:
+    image: java-udp-programming
+    build:
+      context: .
+    command:
+      - unicast
+      - server
+      - --port=4040
+    ports:
+      - 4040:4040
+
+  unicast-client:
+    image: java-udp-programming
+    build:
+      context: .
+    command:
+      - unicast
+      - client
+      - --host=unicast-server
+      - --port=4040
+    depends_on:
+      - unicast-server
+
+  multicast-server:
+    image: java-udp-programming
+    build:
+      context: .
+    command:
+      - multicast
+      - server
+      - --port=5050
+    ports:
+      - 5050:5050
+
+  mulicast-client-1:
+    image: java-udp-programming
+    build:
+      context: .
+    command:
+      - multicast
+      - client
+      - --host=multicast-server
+      - --port=5050
+    depends_on:
+      - multicast-server
+
+  mulicast-client-2:
+    image: java-udp-programming
+    build:
+      context: .
+    command:
+      - multicast
+      - client
+      - --host=multicast-server
+      - --port=5050
+    depends_on:
+      - multicast-server
+
+  broadcast-server:
+    image: java-udp-programming
+    build:
+      context: .
+    command:
+      - broadcast
+      - server
+      - --port=6060
+    ports:
+      - 6060:6060
+
+  broadcast-client-1:
+    image: java-udp-programming
+    build:
+      context: .
+    command:
+      - broadcast
+      - client
+      - --host=broadcast-server
+      - --port=6060
+    depends_on:
+      - broadcast-server
+
+  broadcast-client-2:
+    image: java-udp-programming
+    build:
+      context: .
+    command:
+      - broadcast
+      - client
+      - --host=broadcast-server
+      - --port=6060
+    depends_on:
+      - broadcast-server
