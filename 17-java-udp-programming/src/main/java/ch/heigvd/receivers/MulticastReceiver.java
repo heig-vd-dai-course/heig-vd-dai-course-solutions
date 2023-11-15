@@ -27,7 +27,7 @@ public class MulticastReceiver extends AbstractReceiver {
     protected String host;
 
     @Override
-    public Integer call() throws Exception {
+    public Integer call() {
         try (MulticastSocket socket = new MulticastSocket(parent.getPort())) {
             InetAddress multicastAddress = InetAddress.getByName(host);
             InetSocketAddress group = new InetSocketAddress(multicastAddress, parent.getPort());
