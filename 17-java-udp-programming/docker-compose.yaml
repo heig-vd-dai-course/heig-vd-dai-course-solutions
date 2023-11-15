@@ -1,93 +1,84 @@
 services:
-  unicast-server:
+  broadcast-emitter:
     image: java-udp-programming
     build:
       context: .
     command:
-      - unicast
-      - server
-      - --port=4040
-    ports:
-      - 4040:4040
+      - TODO
 
-  unicast-client:
+  multicast-emitter:
     image: java-udp-programming
     build:
       context: .
     command:
-      - unicast
-      - client
-      - --host=unicast-server
-      - --port=4040
+      - TODO
+
+  unicast-emitter:
+    image: java-udp-programming
+    build:
+      context: .
+    command:
+      - TODO
+
+  broadcast-receiver-1:
+    image: java-udp-programming
+    build:
+      context: .
+    command:
+      - TODO
     depends_on:
-      - unicast-server
+      - broadcast-emitter
 
-  multicast-server:
+  broadcast-receiver-2:
     image: java-udp-programming
     build:
       context: .
     command:
-      - multicast
-      - server
-      - --port=5050
-    ports:
-      - 5050:5050
-
-  mulicast-client-1:
-    image: java-udp-programming
-    build:
-      context: .
-    command:
-      - multicast
-      - client
-      - --host=multicast-server
-      - --port=5050
+      - TODO
     depends_on:
-      - multicast-server
+      - broadcast-emitter
 
-  mulicast-client-2:
+  unicast-receiver-1:
     image: java-udp-programming
     build:
       context: .
     command:
-      - multicast
-      - client
-      - --host=multicast-server
-      - --port=5050
+      - TODO
     depends_on:
-      - multicast-server
+      - unicast-emitter
 
-  broadcast-server:
+  unicast-receiver-2:
     image: java-udp-programming
     build:
       context: .
     command:
-      - broadcast
-      - server
-      - --port=6060
-    ports:
-      - 6060:6060
-
-  broadcast-client-1:
-    image: java-udp-programming
-    build:
-      context: .
-    command:
-      - broadcast
-      - client
-      - --host=broadcast-server
-      - --port=6060
+      - TODO
     depends_on:
-      - broadcast-server
+      - unicast-emitter
 
-  broadcast-client-2:
+  multicast-receiver-1:
     image: java-udp-programming
     build:
       context: .
     command:
-      - broadcast
-      - client
-      - --host=broadcast-server
-      - --port=6060
+      - TODO
     depends_on:
-      - broadcast-server
+      - multicast-emitter
+
+  multicast-receiver-2:
+    image: java-udp-programming
+    build:
+      context: .
+    command:
+      - TODO
+    depends_on:
+      - multicast-emitter
+
+  multicast-receiver-3:
+    image: java-udp-programming
+    build:
+      context: .
+    command:
+      - TODO
+    depends_on:
+      - multicast-emitter
