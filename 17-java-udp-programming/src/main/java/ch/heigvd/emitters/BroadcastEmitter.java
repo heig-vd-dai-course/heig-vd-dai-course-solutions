@@ -13,7 +13,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 @Command(
-        name = "broadcast",
+        name = "broadcast-emitter",
         description = "Start an UDP broadcast emitter"
 )
 public class BroadcastEmitter extends AbstractEmitter {

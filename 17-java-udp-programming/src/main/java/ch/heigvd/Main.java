@@ -3,7 +3,8 @@ package ch.heigvd;
 import ch.heigvd.emitters.BroadcastEmitter;
 import ch.heigvd.emitters.MulticastEmitter;
 import ch.heigvd.emitters.UnicastEmitter;
-import ch.heigvd.receivers.Receiver;
+import ch.heigvd.receivers.MulticastReceiver;
+import ch.heigvd.receivers.UnicastReceiver;
 import ch.heigvd.utils.ListNetworkInterfaces;
 import lombok.Getter;
 import picocli.CommandLine;
@@ -12,7 +13,14 @@ import picocli.CommandLine.Command;
 @Command(
         description = "Practical content of the Java UDP programming chapter",
         version = "1.0.0",
-        subcommands = {BroadcastEmitter.class, MulticastEmitter.class, UnicastEmitter.class, Receiver.class, ListNetworkInterfaces.class},
+        subcommands = {
+            BroadcastEmitter.class,
+            MulticastEmitter.class,
+            UnicastEmitter.class,
+            UnicastReceiver.class,
+            MulticastReceiver.class,
+            ListNetworkInterfaces.class
+        },
         scope = CommandLine.ScopeType.INHERIT,
         mixinStandardHelpOptions = true
 )

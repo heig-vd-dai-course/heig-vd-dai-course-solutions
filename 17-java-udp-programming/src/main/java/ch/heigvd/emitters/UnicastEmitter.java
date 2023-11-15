@@ -13,7 +13,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 @Command(
-        name = "unicast",
+        name = "unicast-emitter",
         description = "Start an UDP unicast emitter"
 )
 public class UnicastEmitter extends AbstractEmitter {
