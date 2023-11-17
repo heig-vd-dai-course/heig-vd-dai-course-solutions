@@ -3,10 +3,17 @@ networks:
     name: my-isolated-network-name
 
 services:
+  unicast-emitter:
+    image: ghcr.io/heig-vd-dai-course/java-udp-programming
+    command:
+      - unicast-emitter
+      - --delay=10000
+      - --frequency=15000
+      - --host=unicast-receiver-1
+      - --port=9876
+
   broadcast-emitter:
-    image: java-udp-programming
-    build:
-      context: .
+    image: ghcr.io/heig-vd-dai-course/java-udp-programming
     command:
       - broadcast-emitter
       - --delay=5000
@@ -17,9 +24,7 @@ services:
       - my-isolated-network
 
   multicast-emitter:
-    image: java-udp-programming
-    build:
-      context: .
+    image: ghcr.io/heig-vd-dai-course/java-udp-programming
     command:
       - multicast-emitter
       - --delay=10000
@@ -28,21 +33,24 @@ services:
       - --port=9876
       - --interface=eth0
 
-  unicast-emitter:
-    image: java-udp-programming
-    build:
-      context: .
+  unicast-receiver-1:
+    image: ghcr.io/heig-vd-dai-course/java-udp-programming
     command:
-      - unicast-emitter
-      - --delay=10000
-      - --frequency=15000
-      - --host=unicast-receiver-1
+      - unicast-receiver
       - --port=9876
+    depends_on:
+      - unicast-emitter
+
+  unicast-receiver-2:
+    image: ghcr.io/heig-vd-dai-course/java-udp-programming
+    command:
+      - unicast-receiver
+      - --port=9876
+    depends_on:
+      - unicast-emitter
 
   broadcast-receiver-1:
-    image: java-udp-programming
-    build:
-      context: .
+    image: ghcr.io/heig-vd-dai-course/java-udp-programming
     command:
       - broadcast-receiver
       - --port=9876
@@ -52,9 +60,7 @@ services:
       - broadcast-emitter
 
   broadcast-receiver-2:
-    image: java-udp-programming
-    build:
-      context: .
+    image: ghcr.io/heig-vd-dai-course/java-udp-programming
     command:
       - broadcast-receiver
       - --port=9876
@@ -63,30 +69,8 @@ services:
     depends_on:
       - broadcast-emitter
 
-  unicast-receiver-1:
-    image: java-udp-programming
-    build:
-      context: .
-    command:
-      - unicast-receiver
-      - --port=9876
-    depends_on:
-      - unicast-emitter
-
-  unicast-receiver-2:
-    image: java-udp-programming
-    build:
-      context: .
-    command:
-      - unicast-receiver
-      - --port=9876
-    depends_on:
-      - unicast-emitter
-
   multicast-receiver-1:
-    image: java-udp-programming
-    build:
-      context: .
+    image: ghcr.io/heig-vd-dai-course/java-udp-programming
     command:
       - multicast-receiver
       - --host=239.1.1.1
@@ -96,9 +80,7 @@ services:
       - multicast-emitter
 
   multicast-receiver-2:
-    image: java-udp-programming
-    build:
-      context: .
+    image: ghcr.io/heig-vd-dai-course/java-udp-programming
     command:
       - multicast-receiver
       - --host=239.1.1.1
@@ -108,9 +90,7 @@ services:
       - multicast-emitter
 
   multicast-receiver-3:
-    image: java-udp-programming
-    build:
-      context: .
+    image: ghcr.io/heig-vd-dai-course/java-udp-programming
     command:
       - multicast-receiver
       - --host=239.1.1.2
