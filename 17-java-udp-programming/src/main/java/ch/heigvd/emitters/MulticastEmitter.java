@@ -29,19 +29,22 @@ public class MulticastEmitter extends AbstractEmitter {
     @Override
     public Integer call() {
         try (MulticastSocket socket = new MulticastSocket(parent.getPort())) {
+            String myself = InetAddress.getLocalHost().getHostAddress() + ":" + parent.getPort();
+            System.out.println("Multicast emitter started (" + myself + ")");
+
             InetAddress multicastAddress = InetAddress.getByName(host);
             InetSocketAddress group = new InetSocketAddress(multicastAddress, parent.getPort());
             NetworkInterface networkInterface = NetworkInterface.getByName(interfaceName);
-
             socket.joinGroup(group, networkInterface);
 
             ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-
             scheduler.scheduleAtFixedRate(() -> {
                 try {
                     String timestamp = dateFormat.format(new Date());
+                    String message = "Hello, from multicast emitter! (" + myself + " at " + timestamp + ")";
 
-                    String message = "Hello, from multicast client at " + InetAddress.getLocalHost().getHostAddress() + " at " + timestamp;
+                    System.out.println("Multicasting '" + message + "' to " + host + ":" + parent.getPort() + " on interface " + interfaceName);
+
                     byte[] payload = message.getBytes(StandardCharsets.UTF_8);
 
                     DatagramPacket datagram = new DatagramPacket(
@@ -51,8 +54,6 @@ public class MulticastEmitter extends AbstractEmitter {
                     );
 
                     socket.send(datagram);
-
-                    System.out.println("Message multicasted: " + message);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }

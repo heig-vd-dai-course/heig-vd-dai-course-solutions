@@ -21,15 +21,20 @@ public class BroadcastEmitter extends AbstractEmitter {
     @Override
     public Integer call() {
         try (DatagramSocket socket = new DatagramSocket()) {
+            String myself = InetAddress.getLocalHost().getHostAddress() + ":" + parent.getPort();
+            System.out.println("Broadcast emitter started (" + myself + ")");
+
             socket.setBroadcast(true);
             InetAddress broadcastAddress = InetAddress.getByName(host);
-            ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
+            ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
             scheduler.scheduleAtFixedRate(() -> {
                 try {
                     String timestamp = dateFormat.format(new Date());
+                    String message = "Hello, from broadcast emitter! (" + myself + " at " + timestamp + ")";
 
-                    String message = "Hello, from broadcast client at " + InetAddress.getLocalHost().getHostAddress() + " at " + timestamp;
+                    System.out.println("Broadcasting '" + message + "' to " + host + ":" + parent.getPort());
+
                     byte[] payload = message.getBytes(StandardCharsets.UTF_8);
 
                     DatagramPacket datagram = new DatagramPacket(
@@ -40,8 +45,6 @@ public class BroadcastEmitter extends AbstractEmitter {
                     );
 
                     socket.send(datagram);
-
-                    System.out.println("Message broadcasted: " + message);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }

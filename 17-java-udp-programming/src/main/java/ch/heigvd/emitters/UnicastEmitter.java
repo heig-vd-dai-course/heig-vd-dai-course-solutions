@@ -21,14 +21,19 @@ public class UnicastEmitter extends AbstractEmitter {
     @Override
     public Integer call() {
         try (DatagramSocket socket = new DatagramSocket()) {
+            String myself = InetAddress.getLocalHost().getHostAddress() + ":" + parent.getPort();
+            System.out.println("Unicast emitter started (" + myself + ")");
+
             InetAddress serverAddress = InetAddress.getByName(host);
             ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
             scheduler.scheduleAtFixedRate(() -> {
                 try {
                     String timestamp = dateFormat.format(new Date());
+                    String message = "Hello, from unicast emitter! (" + myself + " at " + timestamp + ")";
 
-                    String message = "Hello, from unicast client at " + InetAddress.getLocalHost().getHostAddress() + " at " + timestamp;
+                    System.out.println("Unicasting '" + message + "' to " + host + ":" + parent.getPort());
+
                     byte[] payload = message.getBytes(StandardCharsets.UTF_8);
 
                     DatagramPacket datagram = new DatagramPacket(
@@ -39,8 +44,6 @@ public class UnicastEmitter extends AbstractEmitter {
                     );
 
                     socket.send(datagram);
-
-                    System.out.println("Message unicasted: " + message);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }

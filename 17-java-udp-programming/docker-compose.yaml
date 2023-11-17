@@ -1,31 +1,53 @@
+networks:
+  my-isolated-network:
+    name: my-isolated-network-name
+
 services:
   broadcast-emitter:
     image: java-udp-programming
     build:
       context: .
     command:
-      - TODO
+      - broadcast-emitter
+      - --delay=5000
+      - --frequency=30000
+      - --host=255.255.255.255
+      - --port=9876
+    networks:
+      - my-isolated-network
 
   multicast-emitter:
     image: java-udp-programming
     build:
       context: .
     command:
-      - TODO
+      - multicast-emitter
+      - --delay=10000
+      - --frequency=15000
+      - --host=239.1.1.1
+      - --port=9876
+      - --interface=eth0
 
   unicast-emitter:
     image: java-udp-programming
     build:
       context: .
     command:
-      - TODO
+      - unicast-emitter
+      - --delay=10000
+      - --frequency=15000
+      - --host=unicast-receiver-1
+      - --port=9876
 
   broadcast-receiver-1:
     image: java-udp-programming
     build:
       context: .
     command:
-      - TODO
+      - broadcast-receiver
+      - --port=9876
+    networks:
+      - my-isolated-network
     depends_on:
       - broadcast-emitter
 
@@ -34,7 +56,10 @@ services:
     build:
       context: .
     command:
-      - TODO
+      - broadcast-receiver
+      - --port=9876
+    networks:
+      - my-isolated-network
     depends_on:
       - broadcast-emitter
 
@@ -43,7 +68,8 @@ services:
     build:
       context: .
     command:
-      - TODO
+      - unicast-receiver
+      - --port=9876
     depends_on:
       - unicast-emitter
 
@@ -52,7 +78,8 @@ services:
     build:
       context: .
     command:
-      - TODO
+      - unicast-receiver
+      - --port=9876
     depends_on:
       - unicast-emitter
 
@@ -61,7 +88,10 @@ services:
     build:
       context: .
     command:
-      - TODO
+      - multicast-receiver
+      - --host=239.1.1.1
+      - --port=9876
+      - --interface=eth0
     depends_on:
       - multicast-emitter
 
@@ -70,7 +100,10 @@ services:
     build:
       context: .
     command:
-      - TODO
+      - multicast-receiver
+      - --host=239.1.1.1
+      - --port=9876
+      - --interface=eth0
     depends_on:
       - multicast-emitter
 
@@ -79,6 +112,9 @@ services:
     build:
       context: .
     command:
-      - TODO
+      - multicast-receiver
+      - --host=239.1.1.2
+      - --port=9876
+      - --interface=eth0
     depends_on:
       - multicast-emitter
