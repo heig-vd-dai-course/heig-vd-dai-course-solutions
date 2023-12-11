@@ -1,7 +1,10 @@
 # Users API
 
-The users API allows to manage users. It uses the HTTP protocol and the JSON
-format.
+The users API allows to manage users. It uses the HTTP protocol on port `8080`.
+
+The JSON format is used to exchange data. The `Content-Type` header must be set
+to `application/json` when sending data to the API. The `Accept` header must be
+set to `application/json` when receiving data from the API.
 
 The API is based on the CRUD pattern. It has the following operations:
 
