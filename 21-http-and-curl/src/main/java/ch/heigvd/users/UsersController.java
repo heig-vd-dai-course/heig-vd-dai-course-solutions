@@ -1,7 +1,6 @@
 package ch.heigvd.users;
 
 import io.javalin.http.*;
-import io.javalin.validation.ValidationError;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +22,7 @@ public class UsersController {
                 .check(obj -> obj.lastName != null, "Missing last name")
                 .check(obj -> obj.email != null, "Missing email")
                 .check(obj -> obj.password != null, "Missing password")
-                .getOrThrow(message -> new BadRequestResponse());
+                .get();
 
         for (User user : users.values()) {
             if (user.email.equals(newUser.email)) {
@@ -31,12 +30,18 @@ public class UsersController {
             }
         }
 
-        newUser.id = userId.getAndIncrement();
+        User user = new User();
 
-        users.put(newUser.id, newUser);
+        user.id = userId.getAndIncrement();
+        user.firstName = newUser.firstName;
+        user.lastName = newUser.lastName;
+        user.email = newUser.email;
+        user.password = newUser.password;
+
+        users.put(user.id, user);
 
         ctx.status(HttpStatus.CREATED);
-        ctx.json(newUser);
+        ctx.json(user);
     }
 
     public void getOne(Context ctx) {
@@ -75,16 +80,23 @@ public class UsersController {
                 .check(userId -> users.get(userId) != null, "User not found")
                 .getOrThrow(message -> new NotFoundResponse());
 
-        User updatedUser = ctx.bodyValidator(User.class)
+        User updateUser = ctx.bodyValidator(User.class)
                 .check(obj -> obj.firstName != null, "Missing first name")
                 .check(obj -> obj.lastName != null, "Missing last name")
                 .check(obj -> obj.email != null, "Missing email")
                 .check(obj -> obj.password != null, "Missing password")
-                .getOrThrow(message -> new BadRequestResponse());
+                .get();
 
-        users.put(id, updatedUser);
+        User user = users.get(id);
 
-        ctx.json(updatedUser);
+        user.firstName = updateUser.firstName;
+        user.lastName = updateUser.lastName;
+        user.email = updateUser.email;
+        user.password = updateUser.password;
+
+        users.put(id, user);
+
+        ctx.json(user);
     }
 
     public void deleteUser(Context ctx) {

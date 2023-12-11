@@ -4,7 +4,6 @@ import ch.heigvd.auth.AuthController;
 import ch.heigvd.users.User;
 import ch.heigvd.users.UsersController;
 import io.javalin.Javalin;
-import io.javalin.http.UnauthorizedResponse;
 
 import java.util.concurrent.ConcurrentHashMap;
 

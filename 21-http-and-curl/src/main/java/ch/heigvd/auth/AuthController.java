@@ -17,12 +17,12 @@ public class AuthController {
         User loginUser = ctx.bodyValidator(User.class)
                 .check(obj -> obj.email != null, "Missing email")
                 .check(obj -> obj.password != null, "Missing password")
-                .getOrThrow(message -> new BadRequestResponse());
+                .get();
 
         for (User user : users.values()) {
             if (user.email.equals(loginUser.email) && user.password.equals(loginUser.password)) {
                 ctx.cookie("user", user.id.toString());
-                ctx.json(user);
+                ctx.status(HttpStatus.NO_CONTENT);
                 return;
             }
         }

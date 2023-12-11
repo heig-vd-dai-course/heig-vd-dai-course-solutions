@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Start server" type="Application" factoryName="Application">
+  <configuration default="false" name="Start application" type="Application" factoryName="Application">
     <option name="MAIN_CLASS_NAME" value="ch.heigvd.Main" />
     <module name="21-http-and-curl" />
     <method v="2">
