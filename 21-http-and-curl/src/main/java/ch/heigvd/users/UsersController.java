@@ -16,7 +16,7 @@ public class UsersController {
         this.users = users;
     }
 
-    public void createUser(Context ctx) {
+    public void create(Context ctx) {
         User newUser = ctx.bodyValidator(User.class)
                 .check(obj -> obj.firstName != null, "Missing first name")
                 .check(obj -> obj.lastName != null, "Missing last name")
@@ -75,7 +75,7 @@ public class UsersController {
         ctx.json(users);
     }
 
-    public void updateUser(Context ctx) {
+    public void update(Context ctx) {
         Integer id = ctx.pathParamAsClass("id", Integer.class)
                 .check(userId -> users.get(userId) != null, "User not found")
                 .getOrThrow(message -> new NotFoundResponse());
@@ -99,7 +99,7 @@ public class UsersController {
         ctx.json(user);
     }
 
-    public void deleteUser(Context ctx) {
+    public void delete(Context ctx) {
         Integer id = ctx.pathParamAsClass("id", Integer.class)
                 .check(userId -> users.get(userId) != null, "User not found")
                 .getOrThrow(message -> new NotFoundResponse());

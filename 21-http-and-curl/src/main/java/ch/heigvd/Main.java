@@ -27,11 +27,11 @@ public class Main {
     app.get("/profile", authController::profile);
 
     // Users routes
-    app.post("/users", usersController::createUser);
+    app.post("/users", usersController::create);
     app.get("/users", usersController::getMany);
     app.get("/users/{id}", usersController::getOne);
-    app.put("/users/{id}", usersController::updateUser);
-    app.delete("/users/{id}", usersController::deleteUser);
+    app.put("/users/{id}", usersController::update);
+    app.delete("/users/{id}", usersController::delete);
 
     app.start(PORT);
   }
