@@ -28,7 +28,7 @@ practical content.
 
 - What are the commands to start the multicast emitter and receiver?
 
-  > **Note**  
+  > [!IMPORTANT]  
   > The `en0` interface is specific to my (Ludovic) machine running macOS. You
   > will have to replace it with the interface of your machine. You can find the
   > interfaces of your machine with the
@@ -91,7 +91,7 @@ practical content.
 
 - Which command(s) did you use to publish the Docker image?
 
-  > **Note**  
+  > [!IMPORTANT]  
   > The following commands require you to be logged in to GitHub Container
   > Registry. The name of the image must be updated to match your GitHub
   > username.

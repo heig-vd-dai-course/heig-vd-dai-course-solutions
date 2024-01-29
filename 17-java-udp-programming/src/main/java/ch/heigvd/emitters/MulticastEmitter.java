@@ -1,8 +1,6 @@
 package ch.heigvd.emitters;
 
-import picocli.CommandLine;
 import picocli.CommandLine.Command;
-import picocli.CommandLine.Option;
 
 import java.io.IOException;
 import java.net.*;
@@ -18,24 +16,13 @@ import java.util.concurrent.TimeUnit;
 )
 public class MulticastEmitter extends AbstractEmitter {
 
-    @Option(
-            names = {"-i", "--interface"},
-            description = "Interface to use.",
-            scope = CommandLine.ScopeType.INHERIT,
-            required = true
-    )
-    private String interfaceName;
-
     @Override
     public Integer call() {
-        try (MulticastSocket socket = new MulticastSocket(parent.getPort())) {
+        try (DatagramSocket socket = new DatagramSocket()) {
             String myself = InetAddress.getLocalHost().getHostAddress() + ":" + parent.getPort();
             System.out.println("Multicast emitter started (" + myself + ")");
 
-            InetAddress multicastAddress = InetAddress.getByName(host);
-            InetSocketAddress group = new InetSocketAddress(multicastAddress, parent.getPort());
-            NetworkInterface networkInterface = NetworkInterface.getByName(interfaceName);
-            socket.joinGroup(group, networkInterface);
+            InetSocketAddress group = new InetSocketAddress(host, parent.getPort());
 
             ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
             scheduler.scheduleAtFixedRate(() -> {
@@ -43,7 +30,7 @@ public class MulticastEmitter extends AbstractEmitter {
                     String timestamp = dateFormat.format(new Date());
                     String message = "Hello, from multicast emitter! (" + myself + " at " + timestamp + ")";
 
-                    System.out.println("Multicasting '" + message + "' to " + host + ":" + parent.getPort() + " on interface " + interfaceName);
+                    System.out.println("Multicasting '" + message + "' to " + host + ":" + parent.getPort());
 
                     byte[] payload = message.getBytes(StandardCharsets.UTF_8);
 
@@ -61,8 +48,6 @@ public class MulticastEmitter extends AbstractEmitter {
 
             // Keep the program running for a while
             scheduler.awaitTermination(Long.MAX_VALUE, TimeUnit.MILLISECONDS);
-
-            socket.leaveGroup(group, networkInterface);
         } catch (Exception e) {
             e.printStackTrace();
             return 1;

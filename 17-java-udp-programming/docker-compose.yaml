@@ -31,7 +31,6 @@ services:
       - --frequency=15000
       - --host=239.1.1.1
       - --port=9876
-      - --interface=eth0
 
   unicast-receiver-1:
     image: ghcr.io/heig-vd-dai-course/java-udp-programming

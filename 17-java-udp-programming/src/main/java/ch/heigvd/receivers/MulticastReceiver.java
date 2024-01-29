@@ -30,7 +30,7 @@ public class MulticastReceiver extends AbstractReceiver {
     public Integer call() {
         try (MulticastSocket socket = new MulticastSocket(parent.getPort())) {
             String myself = InetAddress.getLocalHost().getHostAddress() + ":" + parent.getPort();
-            System.out.println("Multicast receiver started (" + myself + ")");
+            System.out.println("Multicast receiver started (" + myself + ") on " + interfaceName);
 
             InetAddress multicastAddress = InetAddress.getByName(host);
             InetSocketAddress group = new InetSocketAddress(multicastAddress, parent.getPort());
