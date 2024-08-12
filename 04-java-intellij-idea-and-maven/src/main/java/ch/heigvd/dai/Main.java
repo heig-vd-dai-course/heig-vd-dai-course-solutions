@@ -18,7 +18,7 @@ public class Main {
 
   @CommandLine.Parameters(
       index = "0",
-      description = "The name of the user (default: World).",
+      description = "The name of the user (default: ${DEFAULT-VALUE}).",
       defaultValue = "World")
   protected String name;
 

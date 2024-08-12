@@ -11,7 +11,7 @@ public class Goodbye implements Callable<Integer> {
 
   @CommandLine.Option(
       names = {"-f", "--farewells"},
-      description = "The farewells to address the user (default: Goodbye).",
+      description = "The farewells to address the user (default: ${DEFAULT-VALUE}).",
       defaultValue = "Goodbye")
   protected String farewells;
 
