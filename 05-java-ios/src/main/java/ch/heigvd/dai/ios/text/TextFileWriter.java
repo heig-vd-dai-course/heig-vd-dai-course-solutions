@@ -14,7 +14,7 @@ public class TextFileWriter implements Writable {
       names = {"-c", "--character"},
       description = "Character to write (default: ${DEFAULT-VALUE})",
       defaultValue = "a")
-  private char character;
+  protected char character;
 
   @Override
   public void write(String filename, int sizeInBytes) {

@@ -16,7 +16,7 @@ public class Write implements Callable<Integer> {
       names = {"-s", "--size"},
       description = "Size in bytes",
       required = true)
-  private int sizeInBytes;
+  protected int sizeInBytes;
 
   @Override
   public Integer call() {
