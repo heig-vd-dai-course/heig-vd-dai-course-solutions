@@ -18,6 +18,8 @@ public class BufferedBinaryFileWriter implements Writable {
       for (int i = 0; i < sizeInBytes; i++) {
         bos.write(1);
       }
+
+      bos.flush();
     } catch (java.io.IOException e) {
       System.err.println("Error: " + e.getMessage());
     }
