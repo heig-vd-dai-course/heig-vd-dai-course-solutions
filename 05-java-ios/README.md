@@ -194,7 +194,7 @@ buffered streams are way more efficient.
 We always recommend using the buffered streams because they are more efficient
 and provide better performance even for small files.
 
-### Why is it more efficient than the other types of streans?
+### Why is it more efficient than the other types of streams?
 
 - The `BufferedInputStream` and `BufferedOutputStream` use a buffer to read and
   write data. This buffer reduces the number of system calls, which is more
