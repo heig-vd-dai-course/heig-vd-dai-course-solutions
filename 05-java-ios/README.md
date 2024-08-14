@@ -82,20 +82,20 @@ java -jar target/java-ios-1.0-SNAPSHOT.jar --implementation BUFFERED_BINARY 5242
 
 The following table shows the benchmark results for each stream type:
 
-|    Size | Implementation   | Average write (ms) | Average read (ms) |
-| ------: | ---------------- | -----------------: | ----------------: |
-| 1 bytes | BINARY           |               76.8 |              76.5 |
-| 1 bytes | BUFFERED_BINARY  |               76.1 |              76.6 |
-|         | Performance gain |                1.0 |              0.99 |
-|   1 KiB | BINARY           |               89.8 |              85.7 |
-|   1 KiB | BUFFERED_BINARY  |               85.4 |              85.5 |
-|         | Performance gain |               1.05 |               1.0 |
-|   1 MiB | BINARY           |             4437.7 |             605.6 |
-|   1 MiB | BUFFERED_BINARY  |               94.4 |              91.8 |
-|         | Performance gain |               47.0 |               6.6 |
-|   5 MiB | BINARY           |            21921.1 |            2710.2 |
-|   5 MiB | BUFFERED_BINARY  |              115.3 |             108.4 |
-|         | Performance gain |             190.12 |                25 |
+|   Size | Implementation   | Average write (ms) | Average read (ms) |
+| -----: | ---------------- | -----------------: | ----------------: |
+| 1 byte | BINARY           |               76.8 |              76.5 |
+| 1 byte | BUFFERED_BINARY  |               76.1 |              76.6 |
+|        | Performance gain |                1.0 |              0.99 |
+|  1 KiB | BINARY           |               89.8 |              85.7 |
+|  1 KiB | BUFFERED_BINARY  |               85.4 |              85.5 |
+|        | Performance gain |               1.05 |               1.0 |
+|  1 MiB | BINARY           |             4437.7 |             605.6 |
+|  1 MiB | BUFFERED_BINARY  |               94.4 |              91.8 |
+|        | Performance gain |               47.0 |               6.6 |
+|  5 MiB | BINARY           |            21921.1 |            2710.2 |
+|  5 MiB | BUFFERED_BINARY  |              115.3 |             108.4 |
+|        | Performance gain |             190.12 |                25 |
 
 ### Text data
 
@@ -105,79 +105,79 @@ The following table shows the benchmark results for each stream type:
 ```sh
 ## 1 byte
 
-# Write a file with 1 byte with the TEXT implementation
-java -jar target/java-ios-1.0-SNAPSHOT.jar --implementation TEXT 1-byte.bin write --size 1
+# Write a file with 1 char with the TEXT implementation
+java -jar target/java-ios-1.0-SNAPSHOT.jar --implementation TEXT 1-char.txt write --size 1
 
-# Read a file with 1 byte with the TEXT implementation
-java -jar target/java-ios-1.0-SNAPSHOT.jar --implementation TEXT 1-byte.bin read
+# Read a file with 1 char with the TEXT implementation
+java -jar target/java-ios-1.0-SNAPSHOT.jar --implementation TEXT 1-char.txt read
 
-# Write a file with 1 byte with the BUFFERED_TEXT implementation
-java -jar target/java-ios-1.0-SNAPSHOT.jar --implementation BUFFERED_TEXT 1-byte.bin write --size 1
+# Write a file with 1 char with the BUFFERED_TEXT implementation
+java -jar target/java-ios-1.0-SNAPSHOT.jar --implementation BUFFERED_TEXT 1-char.txt write --size 1
 
-# Read a file with 1 byte with the BUFFERED_TEXT implementation
-java -jar target/java-ios-1.0-SNAPSHOT.jar --implementation BUFFERED_TEXT 1-byte.bin read
+# Read a file with 1 char with the BUFFERED_TEXT implementation
+java -jar target/java-ios-1.0-SNAPSHOT.jar --implementation BUFFERED_TEXT 1-char.txt read
 
-## 1 KiB (= 1 * 1024 = 1024 bytes)
+## 1 KiB (= 1 * 1024 = 1024 chars)
 
-# Write a file with 1024 bytes with the TEXT implementation
-java -jar target/java-ios-1.0-SNAPSHOT.jar --implementation TEXT 1024-bytes.bin write --size 1024
+# Write a file with 1024 chars with the TEXT implementation
+java -jar target/java-ios-1.0-SNAPSHOT.jar --implementation TEXT 1024-chars.txt write --size 1024
 
-# Read a file with 1024 bytes with the TEXT implementation
-java -jar target/java-ios-1.0-SNAPSHOT.jar --implementation TEXT 1024-bytes.bin read
+# Read a file with 1024 chars with the TEXT implementation
+java -jar target/java-ios-1.0-SNAPSHOT.jar --implementation TEXT 1024-chars.txt read
 
-# Write a file with 1024 bytes with the BUFFERED_TEXT implementation
-java -jar target/java-ios-1.0-SNAPSHOT.jar --implementation BUFFERED_TEXT 1024-bytes.bin write --size 1024
+# Write a file with 1024 chars with the BUFFERED_TEXT implementation
+java -jar target/java-ios-1.0-SNAPSHOT.jar --implementation BUFFERED_TEXT 1024-chars.txt write --size 1024
 
-# Read a file with 1024 bytes with the BUFFERED_TEXT implementation
-java -jar target/java-ios-1.0-SNAPSHOT.jar --implementation BUFFERED_TEXT 1024-bytes.bin read
+# Read a file with 1024 chars with the BUFFERED_TEXT implementation
+java -jar target/java-ios-1.0-SNAPSHOT.jar --implementation BUFFERED_TEXT 1024-chars.txt read
 
-## 1 MiB (= 1 * 1024 * 1024 = 1048576 bytes)
+## 1 MiB (= 1 * 1024 * 1024 = 1048576 chars)
 
-# Write a file with 1048576 bytes with the TEXT implementation
-java -jar target/java-ios-1.0-SNAPSHOT.jar --implementation TEXT 1048576-bytes.bin write --size 1048576
+# Write a file with 1048576 chars with the TEXT implementation
+java -jar target/java-ios-1.0-SNAPSHOT.jar --implementation TEXT 1048576-chars.txt write --size 1048576
 
-# Read a file with 1048576 bytes with the TEXT implementation
-java -jar target/java-ios-1.0-SNAPSHOT.jar --implementation TEXT 1048576-bytes.bin read
+# Read a file with 1048576 chars with the TEXT implementation
+java -jar target/java-ios-1.0-SNAPSHOT.jar --implementation TEXT 1048576-chars.txt read
 
-# Write a file with 1048576 bytes with the BUFFERED_TEXT implementation
-java -jar target/java-ios-1.0-SNAPSHOT.jar --implementation BUFFERED_TEXT 1048576-bytes.bin write --size 1048576
+# Write a file with 1048576 chars with the BUFFERED_TEXT implementation
+java -jar target/java-ios-1.0-SNAPSHOT.jar --implementation BUFFERED_TEXT 1048576-chars.txt write --size 1048576
 
-# Read a file with 1048576 bytes with the BUFFERED_TEXT implementation
-java -jar target/java-ios-1.0-SNAPSHOT.jar --implementation BUFFERED_TEXT 1048576-bytes.bin read
+# Read a file with 1048576 chars with the BUFFERED_TEXT implementation
+java -jar target/java-ios-1.0-SNAPSHOT.jar --implementation BUFFERED_TEXT 1048576-chars.txt read
 
-## 5 MiB (= 5 * 1024 * 1024 = 5242880 bytes)
+## 5 MiB (= 5 * 1024 * 1024 = 5242880 chars)
 
-# Write a file with 5242880 bytes with the TEXT implementation
-java -jar target/java-ios-1.0-SNAPSHOT.jar --implementation TEXT 5242880-bytes.bin write --size 5242880
+# Write a file with 5242880 chars with the TEXT implementation
+java -jar target/java-ios-1.0-SNAPSHOT.jar --implementation TEXT 5242880-chars.txt write --size 5242880
 
-# Read a file with 5242880 bytes with the TEXT implementation
-java -jar target/java-ios-1.0-SNAPSHOT.jar --implementation TEXT 5242880-bytes.bin read
+# Read a file with 5242880 chars with the TEXT implementation
+java -jar target/java-ios-1.0-SNAPSHOT.jar --implementation TEXT 5242880-chars.txt read
 
-# Write a file with 5242880 bytes with the BUFFERED_TEXT implementation
-java -jar target/java-ios-1.0-SNAPSHOT.jar --implementation BUFFERED_TEXT 5242880-bytes.bin write --size 5242880
+# Write a file with 5242880 chars with the BUFFERED_TEXT implementation
+java -jar target/java-ios-1.0-SNAPSHOT.jar --implementation BUFFERED_TEXT 5242880-chars.txt write --size 5242880
 
-# Read a file with 5242880 bytes with the BUFFERED_TEXT implementation
-java -jar target/java-ios-1.0-SNAPSHOT.jar --implementation BUFFERED_TEXT 5242880-bytes.bin read
+# Read a file with 5242880 chars with the BUFFERED_TEXT implementation
+java -jar target/java-ios-1.0-SNAPSHOT.jar --implementation BUFFERED_TEXT 5242880-chars.txt read
 ```
 
 </details>
 
 The following table shows the benchmark results for each stream type:
 
-|    Size | Implementation   | Average write (ms) | Average read (ms) |
-| ------: | ---------------- | -----------------: | ----------------: |
-| 1 bytes | TEXT             |               76.7 |              77.2 |
-| 1 bytes | BUFFERED_TEXT    |               84.3 |              83.7 |
-|         | Performance gain |               0.91 |              0.92 |
-|   1 KiB | TEXT             |               83.5 |              80.8 |
-|   1 KiB | BUFFERED_TEXT    |               84.8 |              81.7 |
-|         | Performance gain |               0.98 |              0.99 |
-|   1 MiB | TEXT             |              143.5 |             118.4 |
-|   1 MiB | BUFFERED_TEXT    |               99.2 |              96.2 |
-|         | Performance gain |               1.45 |              1.23 |
-|   5 MiB | TEXT             |              335.0 |             201.7 |
-|   5 MiB | BUFFERED_TEXT    |              123.8 |             118.0 |
-|         | Performance gain |               2.71 |              1.71 |
+|   Size | Implementation   | Average write (ms) | Average read (ms) |
+| -----: | ---------------- | -----------------: | ----------------: |
+| 1 byte | TEXT             |               76.7 |              77.2 |
+| 1 byte | BUFFERED_TEXT    |               84.3 |              83.7 |
+|        | Performance gain |               0.91 |              0.92 |
+|  1 KiB | TEXT             |               83.5 |              80.8 |
+|  1 KiB | BUFFERED_TEXT    |               84.8 |              81.7 |
+|        | Performance gain |               0.98 |              0.99 |
+|  1 MiB | TEXT             |              143.5 |             118.4 |
+|  1 MiB | BUFFERED_TEXT    |               99.2 |              96.2 |
+|        | Performance gain |               1.45 |              1.23 |
+|  5 MiB | TEXT             |              335.0 |             201.7 |
+|  5 MiB | BUFFERED_TEXT    |              123.8 |             118.0 |
+|        | Performance gain |               2.71 |              1.71 |
 
 ## Answers to the questions
 
@@ -214,7 +214,7 @@ character encoding is UTF-8.
 A character encoding is a mapping between characters and bytes. The character
 encoding defines how characters are represented as bytes.
 
-### Why is this methodology important?
+### Why is this benchmark methodology important?
 
 > This methodology is important because it provides a structured and systematic
 > approach to solving problens or conducting research, ensuring consistency,

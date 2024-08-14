@@ -33,8 +33,12 @@ extract_time() {
 
 # Loop over each file size
 for size in "${sizes[@]}"; do
-  # Generate the file name based on the size
-  file_name="${size}-bytes.bin"
+  # Generate the file name based on the size and the extension
+  if [ "$implementation" = "BINARY" ] || [ "$implementation" = "BUFFERED_BINARY" ]; then
+    file_name="${size}-bytes.bin"
+  else
+    file_name="${size}-chars.txt"
+  fi
 
   # Loop over each implementation
   for implementation in "${implementations[@]}"; do
