@@ -13,7 +13,8 @@ These benchmark were done on a laptop with the following specifications:
 - **Storage**: SOLIDIGM P44 Pro SSD M.2 2.0TB (read: 7 GB/s, write: 6.5 GB/s)
 - **Operating System**: Fedora 39 (Linux 6.9.12-100.fc39.x86_64)
 
-Each benchmark was run 10 times, and the average time was calculated.
+Each benchmark was run 10 times, and the average time was calculated with the
+help of the `run_benchmarks.sh` script.
 
 ### Binary data
 

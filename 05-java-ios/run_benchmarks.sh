@@ -6,7 +6,7 @@
 # Define the file sizes and implementations
 sizes=(1 1024 1048576 5242880)
 implementations=("BINARY" "BUFFERED_BINARY" "TEXT" "BUFFERED_TEXT")
-runs=10  # Number of runs for averaging
+runs=10
 
 # Function to calculate average time
 calculate_average() {

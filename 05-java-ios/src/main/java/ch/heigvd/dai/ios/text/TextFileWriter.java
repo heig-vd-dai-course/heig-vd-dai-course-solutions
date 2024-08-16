@@ -9,6 +9,7 @@ import java.nio.charset.StandardCharsets;
  * file writer properly with a try-catch-finally block.
  */
 public class TextFileWriter implements Writable {
+
   @Override
   public void write(String filename, int sizeInBytes) {
     Writer writer = null;
