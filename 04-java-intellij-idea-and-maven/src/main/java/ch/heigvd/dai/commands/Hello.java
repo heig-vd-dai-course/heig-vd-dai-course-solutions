@@ -11,7 +11,7 @@ public class Hello implements Callable<Integer> {
 
   @CommandLine.Option(
       names = {"-g", "--greetings"},
-      description = "The greetings to address the user (default: Hello).",
+      description = "The greetings to address the user (default: ${DEFAULT-VALUE}).",
       defaultValue = "Hello")
   protected String greetings;
 
