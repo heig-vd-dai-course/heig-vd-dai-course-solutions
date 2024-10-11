@@ -1,0 +1,15 @@
+@startuml
+participant Client order 10
+participant Server order 20
+
+Client->Server : SYN
+Server->Client : SYN + ACK
+Client->Server : ACK
+
+== Guessing the number ==
+
+Client->Server : QUIT
+Server->Client : ACK + QUIT
+Client->Server : ACK
+
+@enduml

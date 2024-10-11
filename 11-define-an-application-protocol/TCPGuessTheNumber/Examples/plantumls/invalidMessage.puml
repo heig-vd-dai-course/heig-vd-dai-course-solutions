@@ -1,0 +1,19 @@
+@startuml
+participant Client order 10
+participant Server order 20
+
+== Connection and set 100 as bound == 
+
+Client->Server : GUESS 50
+Server->Server : Generate random number
+Server->Client : LOWER
+
+Client->Server : NOT_VALID
+Server->Client : ERROR 
+
+Client->Server : GUESS 28
+Server->Client : CORRECT
+
+== Close connection ==
+
+@enduml
