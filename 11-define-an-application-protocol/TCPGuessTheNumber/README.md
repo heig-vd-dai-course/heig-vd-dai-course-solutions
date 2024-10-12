@@ -75,7 +75,7 @@ BOUND 1000
 
 #### Response
 
-- `SET`: the upperbound limit has been set without any problems
+- `OK`: the upperbound limit has been set without any problems
 - `ERROR <code>`: an error occured while sending the message. The error code is an integer between 1 and 3 inclusive. The error codes are as follows:
     - 1: The value isn't a number
     - 2: The number can't be negative (<0)
@@ -131,9 +131,26 @@ QUIT
 None.
 
 ## Section 4 - Examples
-s
+
 ### Functional game example
 
+![Functional game example](Examples/images/functionalExample.png)
+
+### Invalid guess example
+
+![Error example](Examples/images/invalidGuess.png)
+
+### Bound error example
+
+![Bound error example](Examples/images/invalidBound.png)
+
+### Invalid restart example
+
+![Invalid restart example](Examples/images/invalidRestart.png)
+
+### Invalid message example
+
+![Invalid message example](Examples/images/invalidMessage.png)
 
 ## Section 5 - 3 way handashake
 
@@ -159,10 +176,6 @@ SYN
 
 - `SYN-ACK`: the client acknowledges the connection
 
-#### Examples
-
-// TODO
-
 ### Disconnect
 
 #### Request
@@ -179,6 +192,6 @@ QUIT
 
 - `QUIT-ACK`: the client acknowledges the disconnection
 
-#### Examples
+### Examples
 
-// TODO
+![3 way handshake](Examples/images/3wayExample.png)
