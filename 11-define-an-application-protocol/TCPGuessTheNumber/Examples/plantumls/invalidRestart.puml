@@ -2,7 +2,7 @@
 participant Client order 10
 participant Server order 20
 
-== Connection and set bound
+== Connection and set bound ==
 
 Client->Server : GUESS 50
 Server->Server : Generate random number
