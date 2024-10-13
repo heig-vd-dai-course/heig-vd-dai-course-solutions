@@ -1,0 +1,11 @@
+@startuml
+participant Client order 10
+participant Server order 20
+participant Emitter order 30
+
+Emitter->Server : TEMP 1, 30
+Emitter->Server : TEMP 1, a
+
+Client->Server : REQ_TEMP 1
+Server->Client : TEMP 30
+@enduml
