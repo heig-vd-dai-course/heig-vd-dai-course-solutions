@@ -4,6 +4,10 @@ _This solution depends on the previous
 [Java IOs](https://github.com/heig-vd-dai-course/heig-vd-dai-course/tree/main/05-java-ios)
 chapter._
 
+This directory contains the solution to the
+[Docker and Docker Compose](https://github.com/heig-vd-dai-course/heig-vd-dai-course/tree/main/06-docker-and-docker-compose)
+practical content.
+
 ## Run the _"Go further"_ solution
 
 You can specify the Docker Compose file to use with the `-f` option. This is
