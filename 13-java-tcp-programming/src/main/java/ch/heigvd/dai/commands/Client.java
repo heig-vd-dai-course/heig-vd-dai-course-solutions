@@ -1,6 +1,8 @@
 package ch.heigvd.dai.commands;
 
 import java.util.concurrent.Callable;
+
+import ch.heigvd.dai.TCPCLient;
 import picocli.CommandLine;
 
 @CommandLine.Command(name = "client", description = "Start the client part of the network game.")
@@ -20,6 +22,7 @@ public class Client implements Callable<Integer> {
 
   @Override
   public Integer call() {
+    new TCPCLient(host, port);
     return 0;
   }
 }

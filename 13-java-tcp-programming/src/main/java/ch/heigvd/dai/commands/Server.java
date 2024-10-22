@@ -1,6 +1,8 @@
 package ch.heigvd.dai.commands;
 
 import java.util.concurrent.Callable;
+
+import ch.heigvd.dai.TCPServer;
 import picocli.CommandLine;
 
 @CommandLine.Command(name = "server", description = "Start the server part of the network game.")
@@ -14,7 +16,7 @@ public class Server implements Callable<Integer> {
 
   @Override
   public Integer call() {
-    throw new UnsupportedOperationException(
-        "Please remove this exception and implement this method.");
+    new TCPServer(port, 0, 100);
+    return 0;
   }
 }
