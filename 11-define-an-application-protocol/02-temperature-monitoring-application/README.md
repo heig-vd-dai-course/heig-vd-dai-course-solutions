@@ -118,7 +118,7 @@ error message to the operator.
 
 - `ERROR <code>`: an error occurred while sending the message. The error code is
   an integer between -1 and -1 inclusive. The error code is as follow:
-  - -1: Invalid message
+  - -1: invalid message
 
 ## Section 4 - Examples
 
