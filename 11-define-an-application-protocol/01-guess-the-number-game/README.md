@@ -112,7 +112,7 @@ RESTART
 - `OK`: the server is ready to start a new game and await a `GUESS`
 - `ERROR <code>`: an error occurred while sending the message. The error code is
   an integer between 1 and 1 inclusive. The error code is as follow:
-  - 1: A guessing game is already in session
+  - 1: a guessing game is already in session
 
 ### Quit
 
