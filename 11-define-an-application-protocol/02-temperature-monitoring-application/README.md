@@ -37,15 +37,15 @@ The emitter sends the temperature of the room to the server every few seconds.
 ## Section 2 - Transport protocol
 
 The _"Temperature monitoring"_ protocol is a text transport protocol. It uses
-UDP transport protocol as reliability is not a concern for this application. The
-port it uses is the port 7337.
+UDP transport protocol as reliability is not a concern for this application.
 
 Every message must be encoded in UTF-8 and delimited by a newline character
 (`\n`). The messages are treated as text messages.
 
 The emitters do not have to initiate the communication. They will send the
 temperature of the room to the server every few seconds using multicast with the
-help of UDP and the fire-and-forget pattern.
+help of UDP and the fire-and-forget pattern on the port 7337 and multicast group
+`230.1.2.3`.
 
 The server must verify that the room number is valid.
 
@@ -55,7 +55,7 @@ room along the room number.
 Otherwise, the measurement is not stored and nothing more happens.
 
 The operator must initiate the communication using unicast with the help of UDP
-and the request-response pattern.
+and the request-response pattern on the port 1732.
 
 The operator can request the temperature of a specific room.
 
