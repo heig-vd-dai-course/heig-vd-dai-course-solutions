@@ -1,5 +1,9 @@
 package ch.heigvd.dai.commands;
 
+import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
@@ -78,7 +82,49 @@ public class Receiver implements Callable<Integer> {
    * messaging pattern.
    */
   public Integer operatorsWorker() {
-    throw new UnsupportedOperationException(
-        "Please remove this exception and implement this method.");
+    try (DatagramSocket socket = new DatagramSocket(operatorsPort)) {
+      System.out.println("[SERVER] Server is listening on port " + operatorsPort + "...");
+
+      while (!socket.isClosed()) {
+        byte[]  buffer = new byte[1024];
+
+        DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
+        socket.receive(packet);
+        String message = new String(packet.getData(), packet.getOffset(), packet.getLength(), StandardCharsets.UTF_8);
+
+        System.out.println("[SERVER] Received request : " + message);
+
+        String response;
+        String[] parts = message.split(" ");
+
+        if (parts.length == 2 && "REQ_TEMP".equals(parts[0])) {
+          String roomId = parts[1];
+          Integer temperature = roomsTemperature.get(roomId);
+          if (temperature != null) {
+            response = "TEMP " + temperature;
+          } else {
+            response = "ERROR 2";
+          }
+        }else{
+          response = "ERROR 1";
+        }
+
+        byte[] responseBuffer = response.getBytes(StandardCharsets.UTF_8);
+        DatagramPacket responsePacket =
+                new DatagramPacket(
+                        responseBuffer,
+                        responseBuffer.length,
+                        packet.getAddress(),
+                        packet.getPort());
+
+        socket.send(responsePacket);
+
+        System.out.println("[SERVER] Response sent : " + response);
+      }
+    } catch (IOException e) {
+      System.err.println("[SERVER] An error occurred: " + e.getMessage());
+    }
+
+    return 0;
   }
 }
