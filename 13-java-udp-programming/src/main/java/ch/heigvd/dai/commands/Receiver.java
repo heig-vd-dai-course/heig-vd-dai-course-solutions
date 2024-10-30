@@ -108,9 +108,12 @@ public class Receiver implements Callable<Integer> {
             int temp = Integer.parseInt(messageParts[2]);
 
             roomsTemperature.put(Integer.toString(id), temp);
+            System.out.println("[RECEIVER] Room temperature for " +id + " is " +temp);
           }catch(Exception e){
             System.out.println("[RECEIVER] Exception: " + e);
           }
+        }else{
+          System.out.println("[RECEIVER] Invalid message received: " + message);
         }
       }
 

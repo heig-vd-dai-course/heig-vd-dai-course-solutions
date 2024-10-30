@@ -1,5 +1,9 @@
 package ch.heigvd.dai.commands;
 
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.Callable;
 import picocli.CommandLine;
 
@@ -8,7 +12,9 @@ import picocli.CommandLine;
     description =
         "Start the emitter part of the network application using the fire-and-forget messaging pattern.")
 public class Emitter implements Callable<Integer> {
-
+  public static String END_OF_LINE = "\n";
+  private static String MESSAGE = "TEMP ";
+  private static int ID = 1;
   @CommandLine.Option(
       names = {"-M", "--multicast-address"},
       description = "Multicast address to use (default: ${DEFAULT-VALUE}).",
@@ -30,7 +36,34 @@ public class Emitter implements Callable<Integer> {
 
   @Override
   public Integer call() {
-    throw new UnsupportedOperationException(
-        "Please remove this exception and implement this method.");
+    int temp = 20;
+    System.out.println("[EMITTER] Sending multicast messages...");
+
+    while (true) {
+      String messageWithDate = "[Emitter] sent : " + MESSAGE + ID + " " + temp++ + END_OF_LINE;
+
+      // Create a datagram socket
+      try (DatagramSocket socket = new DatagramSocket()) {
+        // Get the multicast address
+        InetAddress castAdress = InetAddress.getByName(multicastAddress);
+
+        // Transform the message into a byte array - always specify the encoding
+        byte[] buffer = messageWithDate.getBytes(StandardCharsets.UTF_8);
+
+        // Create a packet with the message, the multicast address and the port
+        DatagramPacket packet = new DatagramPacket(buffer, buffer.length, castAdress, port);
+
+        // Send the packet
+        socket.send(packet);
+
+        // Print the message
+        System.out.println("[EMITTER] Message sent: " + messageWithDate);
+
+        // Wait for the next message
+        Thread.sleep(frequency);
+      } catch (Exception e) {
+        System.err.println("[EMITTER] An error occurred: " + e.getMessage());
+      }
+    }
   }
 }
