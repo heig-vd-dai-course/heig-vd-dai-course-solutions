@@ -1,8 +1,7 @@
 package ch.heigvd.dai.commands;
 
 import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
+import java.net.*;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.concurrent.Callable;
@@ -73,8 +72,58 @@ public class Receiver implements Callable<Integer> {
    * messaging pattern.
    */
   public Integer emittersWorker() {
-    throw new UnsupportedOperationException(
-        "Please remove this exception and implement this method.");
+    try (MulticastSocket socket = new MulticastSocket(emittersPort)) {
+      // Join the multicast group
+      InetAddress multicastAddress = InetAddress.getByName(emittersMulticastAddress);
+      InetSocketAddress multicastGroup = new InetSocketAddress(multicastAddress, emittersPort);
+      NetworkInterface netInterface = NetworkInterface.getByName(networkInterface);
+      socket.joinGroup(multicastGroup, netInterface);
+
+      System.out.println(
+              "[RECEIVER] Listening for multicast messages on interface " + networkInterface + "...");
+
+      while (!socket.isClosed()) {
+        // Create a buffer for the incoming message
+        byte[] buffer = new byte[1024];
+
+        // Create a packet for the incoming message
+        DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
+
+        // Receive the packet - this is a blocking call
+        socket.receive(packet);
+
+        // Transform the message into a string
+        String message =
+                new String(
+                        packet.getData(), packet.getOffset(), packet.getLength(), StandardCharsets.UTF_8);
+
+        // Print the message
+        System.out.println("[RECEIVER] Message received: " + message);
+
+        String[] messageParts = message.split(" ");
+
+        if (messageParts.length == 3 && messageParts[0].equals("TEMP")) {
+          try{
+            int id = Integer.parseInt(messageParts[1]);
+            int temp = Integer.parseInt(messageParts[2]);
+
+            roomsTemperature.put(Integer.toString(id), temp);
+          }catch(Exception e){
+            System.out.println("[RECEIVER] Exception: " + e);
+          }
+        }
+      }
+
+      // Quit the multicast group
+      socket.leaveGroup(multicastGroup, netInterface);
+
+    } catch (Exception e) {
+      System.out.println("[Receiver] Exception: " + e);
+    }
+
+
+
+    return 0;
   }
 
   /**
@@ -98,6 +147,11 @@ public class Receiver implements Callable<Integer> {
         String[] parts = message.split(" ");
 
         if (parts.length == 2 && "REQ_TEMP".equals(parts[0])) {
+          /*
+              As the key for the map is a string, there is no need to verify that the user input is a valid number
+
+              If he tries and request something invalid, it will just not be found within the map.
+           */
           String roomId = parts[1];
           Integer temperature = roomsTemperature.get(roomId);
           if (temperature != null) {
