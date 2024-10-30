@@ -105,7 +105,7 @@ public class Receiver implements Callable<Integer> {
         if (messageParts.length == 3 && messageParts[0].equals("TEMP")) {
           try{
             int id = Integer.parseInt(messageParts[1]);
-            int temp = Integer.parseInt(messageParts[2]);
+            int temp = Integer.parseInt(messageParts[2].trim());
 
             roomsTemperature.put(Integer.toString(id), temp);
             System.out.println("[RECEIVER] Room temperature for " +id + " is " +temp);
@@ -155,7 +155,7 @@ public class Receiver implements Callable<Integer> {
 
               If he tries and request something invalid, it will just not be found within the map.
            */
-          String roomId = parts[1];
+          String roomId = parts[1].trim();
           Integer temperature = roomsTemperature.get(roomId);
           if (temperature != null) {
             response = "TEMP " + temperature;

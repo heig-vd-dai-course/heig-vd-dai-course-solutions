@@ -40,7 +40,7 @@ public class Emitter implements Callable<Integer> {
     System.out.println("[EMITTER] Sending multicast messages...");
 
     while (true) {
-      String messageWithDate = "[Emitter] sent : " + MESSAGE + ID + " " + temp++ + END_OF_LINE;
+      String messageWithDate = MESSAGE + ID + " " + temp++ + END_OF_LINE;
 
       // Create a datagram socket
       try (DatagramSocket socket = new DatagramSocket()) {

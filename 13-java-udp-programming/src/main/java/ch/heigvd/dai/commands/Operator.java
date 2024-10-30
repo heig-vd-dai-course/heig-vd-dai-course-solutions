@@ -39,6 +39,7 @@ public class Operator implements Callable<Integer> {
   public Integer call() {
     System.out.println("[CLIENT] Sending request...");
 
+    help();
 
     try (DatagramSocket socket = new DatagramSocket()) {
       // Get the server address
