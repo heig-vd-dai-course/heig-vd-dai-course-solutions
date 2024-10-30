@@ -106,7 +106,7 @@ public class Receiver implements Callable<Integer> {
             response = "ERROR 2";
           }
         }else{
-          response = "ERROR 1";
+          response = "ERROR";
         }
 
         byte[] responseBuffer = response.getBytes(StandardCharsets.UTF_8);

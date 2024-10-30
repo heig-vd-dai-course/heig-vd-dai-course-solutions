@@ -106,7 +106,20 @@ public class Operator implements Callable<Integer> {
                       responsePacket.getLength(),
                       StandardCharsets.UTF_8);
 
-      System.out.println("[CLIENT] Received response: " + response);
+      String[] responseParts = response.split(" ", 2);
+
+      switch (responseParts[0]){
+        case "TEMP" -> System.out.println("La température est de " + responseParts[1]);
+        case "ERROR" -> {
+          if (responseParts.length < 2){
+            System.out.println("Invalid message, please try again");
+            break;
+          }
+
+          System.out.println("Error " + responseParts[1]);
+        }
+      }
+      //System.out.println("[CLIENT] Received response: " + response);
     } catch (Exception e) {
       System.err.println("[CLIENT] An error occurred: " + e.getMessage());
     }
@@ -115,6 +128,10 @@ public class Operator implements Callable<Integer> {
     return 0;
   }
 
-  private void help() {
+  private static void help() {
+    System.out.println("Usage:");
+    System.out.println("  " + Message.REQ_TEMP + " <roomId> - Requests the temperature of a room.");
+    System.out.println("  " + Message.QUIT + " - Ends the application.");
+    System.out.println("  " + Message.HELP + " - Display this help message.");
   }
 }
