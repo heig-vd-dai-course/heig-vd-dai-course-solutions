@@ -88,39 +88,38 @@ public class Operator implements Callable<Integer> {
           System.out.println("Invalid command. Please try again.");
         }
 
-      }
 
-      // Create a buffer for the incoming response
-      byte[] responseBuffer = new byte[1024];
+        // Create a buffer for the incoming response
+        byte[] responseBuffer = new byte[1024];
 
-      // Create a packet for the incoming response
-      DatagramPacket responsePacket = new DatagramPacket(responseBuffer, responseBuffer.length);
+        // Create a packet for the incoming response
+        DatagramPacket responsePacket = new DatagramPacket(responseBuffer, responseBuffer.length);
 
-      // Receive the packet - this is a blocking call
-      socket.receive(responsePacket);
+        // Receive the packet - this is a blocking call
+        socket.receive(responsePacket);
 
-      // Transform the message into a string
-      String response =
-              new String(
-                      responsePacket.getData(),
-                      responsePacket.getOffset(),
-                      responsePacket.getLength(),
-                      StandardCharsets.UTF_8);
+        // Transform the message into a string
+        String response =
+                new String(
+                        responsePacket.getData(),
+                        responsePacket.getOffset(),
+                        responsePacket.getLength(),
+                        StandardCharsets.UTF_8);
 
-      String[] responseParts = response.split(" ", 2);
+        String[] responseParts = response.split(" ", 2);
 
-      switch (responseParts[0]){
-        case "TEMP" -> System.out.println("La température est de " + responseParts[1]);
-        case "ERROR" -> {
-          if (responseParts.length < 2){
-            System.out.println("Invalid message, please try again");
-            break;
+        switch (responseParts[0]) {
+          case "TEMP" -> System.out.println("La température est de " + responseParts[1]);
+          case "ERROR" -> {
+            if (responseParts.length < 2) {
+              System.out.println("Invalid message, please try again");
+              break;
+            }
+
+            System.out.println("Error " + responseParts[1]);
           }
-
-          System.out.println("Error " + responseParts[1]);
         }
       }
-      //System.out.println("[CLIENT] Received response: " + response);
     } catch (Exception e) {
       System.err.println("[CLIENT] An error occurred: " + e.getMessage());
     }
