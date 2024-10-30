@@ -14,7 +14,6 @@ import picocli.CommandLine;
 public class Emitter implements Callable<Integer> {
   public static String END_OF_LINE = "\n";
   private static String MESSAGE = "TEMP ";
-  private static int ID = 1;
   @CommandLine.Option(
       names = {"-M", "--multicast-address"},
       description = "Multicast address to use (default: ${DEFAULT-VALUE}).",
@@ -34,13 +33,20 @@ public class Emitter implements Callable<Integer> {
       defaultValue = "5000")
   protected int frequency;
 
+  @CommandLine.Option(
+          names = {"--id"},
+          description =
+                  "The id used to identify the emitter.",
+          required = true)
+  protected int id;
+
   @Override
   public Integer call() {
     int temp = 20;
     System.out.println("[EMITTER] Sending multicast messages...");
 
     while (true) {
-      String messageWithDate = MESSAGE + ID + " " + temp++ + END_OF_LINE;
+      String messageWithDate = MESSAGE + id + " " + temp++ + END_OF_LINE;
 
       // Create a datagram socket
       try (DatagramSocket socket = new DatagramSocket()) {
