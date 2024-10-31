@@ -37,7 +37,7 @@ public class Receiver implements Callable<Integer> {
   protected int operatorsPort;
 
   @CommandLine.Option(
-      names = {"-I", "--interface"},
+      names = {"-I", "--network-interface"},
       description = "Network interface to use",
       required = true)
   protected String networkInterface;
