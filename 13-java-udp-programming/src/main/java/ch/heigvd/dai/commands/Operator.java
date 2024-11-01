@@ -15,24 +15,22 @@ import picocli.CommandLine;
     description =
         "Start the operator part of the network application using the request-reply messaging pattern.")
 public class Operator implements Callable<Integer> {
-
   public enum Message {
     REQ_TEMP,
     HELP,
     QUIT,
   }
-  public static String END_OF_LINE = "\n";
 
   @CommandLine.Option(
-          names = {"-H", "--host"},
-          description = "Host to connect to.",
-          required = true)
+      names = {"-H", "--host"},
+      description = "Host to connect to.",
+      required = true)
   protected String host;
 
   @CommandLine.Option(
-          names = {"-p", "--port"},
-          description = "Port to use (default: ${DEFAULT-VALUE}).",
-          defaultValue = "1732")
+      names = {"-p", "--port"},
+      description = "Port to use (default: ${DEFAULT-VALUE}).",
+      defaultValue = "1732")
   protected int port;
 
   @Override
@@ -42,7 +40,6 @@ public class Operator implements Callable<Integer> {
     help();
 
     try (DatagramSocket socket = new DatagramSocket()) {
-      // Get the server address
       InetAddress serverAddress = InetAddress.getByName(host);
 
       while (!socket.isClosed()) {
@@ -60,12 +57,11 @@ public class Operator implements Callable<Integer> {
 
           switch (message) {
             case REQ_TEMP -> {
-              int number = Integer.parseInt(userInputParts[1]);
+              String room = userInputParts[1];
 
-              request = Message.REQ_TEMP + " " + number + END_OF_LINE;
+              request = Message.REQ_TEMP + " " + room;
             }
             case HELP -> help();
-
             case QUIT -> {
               socket.close();
               continue;
@@ -73,44 +69,47 @@ public class Operator implements Callable<Integer> {
           }
 
           if (request != null) {
-            // Transform the message into a byte array - always specify the encoding
             byte[] buffer = request.getBytes(StandardCharsets.UTF_8);
 
-            // Create a packet with the message, the server address and the port
             DatagramPacket packet = new DatagramPacket(buffer, buffer.length, serverAddress, port);
 
-            // Send the packet
             socket.send(packet);
 
-            System.out.println("[CLIENT] Request sent: " + request);
+            System.out.println("[Operator] Request sent: " + request);
           }
         } catch (Exception e) {
           System.out.println("Invalid command. Please try again.");
         }
 
-
-        // Create a buffer for the incoming response
         byte[] responseBuffer = new byte[1024];
 
-        // Create a packet for the incoming response
         DatagramPacket responsePacket = new DatagramPacket(responseBuffer, responseBuffer.length);
 
-        // Receive the packet - this is a blocking call
         socket.receive(responsePacket);
 
-        // Transform the message into a string
         String response =
-                new String(
-                        responsePacket.getData(),
-                        responsePacket.getOffset(),
-                        responsePacket.getLength(),
-                        StandardCharsets.UTF_8);
+            new String(
+                responsePacket.getData(),
+                responsePacket.getOffset(),
+                responsePacket.getLength(),
+                StandardCharsets.UTF_8);
 
         String[] responseParts = response.split(" ", 2);
 
-        switch (responseParts[0]) {
-          case "TEMP" -> System.out.println("La température est de " + responseParts[1]);
-          case "ERROR" -> {
+        Receiver.Message message = null;
+        try {
+          message = Receiver.Message.valueOf(responseParts[0]);
+        } catch (IllegalArgumentException e) {
+          // Do nothing
+        }
+
+        switch (message) {
+          case TEMP -> {
+            double roomTemperature = Double.parseDouble(responseParts[1]);
+
+            System.out.println("The temperature of the room is " + roomTemperature);
+          }
+          case ERROR -> {
             if (responseParts.length < 2) {
               System.out.println("Invalid message, please try again");
               break;
@@ -118,20 +117,23 @@ public class Operator implements Callable<Integer> {
 
             System.out.println("Error " + responseParts[1]);
           }
+          case null, default ->
+              System.out.println("Invalid/unknown command sent by receiver, ignore.");
         }
       }
     } catch (Exception e) {
-      System.err.println("[CLIENT] An error occurred: " + e.getMessage());
+      System.err.println("[Operator] An error occurred: " + e.getMessage());
+      return 1;
     }
 
-    System.out.println("[CLIENT] Quitting...");
+    System.out.println("[Operator] Quitting...");
     return 0;
   }
 
   private static void help() {
     System.out.println("Usage:");
-    System.out.println("  " + Message.REQ_TEMP + " <roomId> - Requests the temperature of a room.");
-    System.out.println("  " + Message.QUIT + " - Ends the application.");
+    System.out.println("  " + Message.REQ_TEMP + " <room> - Request the temperature of a room.");
+    System.out.println("  " + Message.QUIT + " - Quit the application.");
     System.out.println("  " + Message.HELP + " - Display this help message.");
   }
 }

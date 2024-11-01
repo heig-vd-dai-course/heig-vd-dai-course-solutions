@@ -4,6 +4,7 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.nio.charset.StandardCharsets;
+import java.util.Random;
 import java.util.concurrent.Callable;
 import picocli.CommandLine;
 
@@ -12,8 +13,19 @@ import picocli.CommandLine;
     description =
         "Start the emitter part of the network application using the fire-and-forget messaging pattern.")
 public class Emitter implements Callable<Integer> {
-  public static String END_OF_LINE = "\n";
-  private static String MESSAGE = "TEMP ";
+  public enum Message {
+    TEMP,
+  }
+
+  // Lower bound for the random number
+  private static final double LOWER_BOUND = 18.0;
+
+  // Upper bound for the random temperature
+  private static final double UPPER_BOUND = 23.0;
+
+  // The temperature of the room
+  private double temperature;
+
   @CommandLine.Option(
       names = {"-M", "--multicast-address"},
       description = "Multicast address to use (default: ${DEFAULT-VALUE}).",
@@ -34,42 +46,41 @@ public class Emitter implements Callable<Integer> {
   protected int frequency;
 
   @CommandLine.Option(
-          names = {"--id"},
-          description =
-                  "The id used to identify the emitter.",
-          required = true)
-  protected int id;
+      names = {"-N", "--name"},
+      description = "The room name.",
+      required = true)
+  protected String name;
 
   @Override
   public Integer call() {
-    int temp = 20;
-    System.out.println("[EMITTER] Sending multicast messages...");
+    System.out.println("[Emitter] Sending multicast messages...");
 
     while (true) {
-      String messageWithDate = MESSAGE + id + " " + temp++ + END_OF_LINE;
+      // Generate a random temperature
+      generateRandomTemperature();
 
-      // Create a datagram socket
+      String messageWithTemperature = Message.TEMP + " " + name + " " + temperature;
+
       try (DatagramSocket socket = new DatagramSocket()) {
-        // Get the multicast address
-        InetAddress castAdress = InetAddress.getByName(multicastAddress);
+        InetAddress multicastAddress = InetAddress.getByName(this.multicastAddress);
 
-        // Transform the message into a byte array - always specify the encoding
-        byte[] buffer = messageWithDate.getBytes(StandardCharsets.UTF_8);
+        byte[] buffer = messageWithTemperature.getBytes(StandardCharsets.UTF_8);
 
-        // Create a packet with the message, the multicast address and the port
-        DatagramPacket packet = new DatagramPacket(buffer, buffer.length, castAdress, port);
+        DatagramPacket packet = new DatagramPacket(buffer, buffer.length, multicastAddress, port);
 
-        // Send the packet
         socket.send(packet);
 
-        // Print the message
-        System.out.println("[EMITTER] Message sent: " + messageWithDate);
+        System.out.println("[Emitter] Message sent: " + messageWithTemperature);
 
-        // Wait for the next message
         Thread.sleep(frequency);
       } catch (Exception e) {
-        System.err.println("[EMITTER] An error occurred: " + e.getMessage());
+        System.err.println("[Emitter] An error occurred: " + e.getMessage());
       }
     }
+  }
+
+  private void generateRandomTemperature() {
+    Random rand = new Random();
+    temperature = rand.nextDouble(UPPER_BOUND - LOWER_BOUND + 1) + LOWER_BOUND;
   }
 }

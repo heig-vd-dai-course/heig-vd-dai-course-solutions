@@ -1,5 +1,5 @@
-# Java UDP programming - Practical content template
+# Java UDP programming
 
-This repository contains the template to the
-[Java UDP programming](https://github.com/heig-vd-dai-course/heig-vd-dai-course/blob/main/13-java-udp-programming)
+This directory contains the solution to the
+[Java UDP programming](https://github.com/heig-vd-dai-course/heig-vd-dai-course/tree/main/13-java-udp-programming)
 practical content.
