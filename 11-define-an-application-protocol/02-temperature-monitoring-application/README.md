@@ -47,10 +47,10 @@ temperature of the room to the server every few seconds using multicast with the
 help of UDP and the fire-and-forget pattern on the port 7337 and multicast group
 `230.1.2.3`.
 
-The server must verify that the room number is valid.
+The server must verify that the room name is valid.
 
-If the room number is valid, the server will store the latest temperature of the
-room along the room number.
+If the room name is valid, the server will store the latest temperature of the
+room along the room name.
 
 Otherwise, the measurement is not stored and nothing more happens.
 
@@ -74,11 +74,12 @@ the room.
 #### Request
 
 ```text
-TEMP <id> <temperature>
+TEMP <name> <temperature>
 ```
 
-- `<id>`: the room number
-- `<temperature>`: the temperature of the room
+- `<name>`: the room name
+- `<temperature>`: the temperature of the room in Celsius (a floating-point
+  number)
 
 #### Response
 
@@ -95,19 +96,15 @@ temperature of.
 REQ_TEMP <room>
 ```
 
-- `<room>`: the room number the client wants the temperature of
+- `<room>`: the room name the client wants the temperature of
 
 #### Response
 
-- `TEMP <temperature>`: the temperature of the room
+- `TEMP <temperature>`: the temperature of the room in Celsius (a floating-point
+  number)
 - `ERROR <code>`: an error occurred during the request. The error code is an
-  integer between 1 and 3 inclusive. The error codes are as follow:
-  - 1: the room number is invalid
-  - 2: the room number is not found
-  - 3: the temperature is not available
-
-The 3rd case, albeit rare, can happen if the temperature for an existing room
-has not been received yet.
+  integer between 1 and 1 inclusive. The error codes are as follow:
+  - 1: the room was not found
 
 ### Invalid message
 

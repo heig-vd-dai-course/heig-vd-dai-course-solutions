@@ -146,6 +146,6 @@ public class Server implements Callable<Integer> {
 
   private void generateRandomNumber() {
     Random rand = new Random();
-    numberToGuess = rand.nextInt(UPPER_BOUND - LOWER_BOUND + 1) + LOWER_BOUND;
+    numberToGuess = rand.nextInt(UPPER_BOUND - LOWER_BOUND) + LOWER_BOUND;
   }
 }
