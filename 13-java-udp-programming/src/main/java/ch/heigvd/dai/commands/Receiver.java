@@ -122,21 +122,26 @@ public class Receiver implements Callable<Integer> {
               break;
             }
 
-            // Extract the room name and the temperature
-            //
-            // As we know from the application protocol, the room name and temperature are separated
-            // by a space
-            String[] roomNameAndTemperature = emitterMessageParts[1].split(" ");
+            try {
+              // Extract the room name and the temperature
+              //
+              // As we know from the application protocol, the room name and temperature are
+              // separated
+              // by a space
+              String[] roomNameAndTemperature = emitterMessageParts[1].split(" ");
 
-            if (roomNameAndTemperature.length < 2) {
+              if (roomNameAndTemperature.length < 2) {
+                System.out.println("[Receiver] Invalid message, ignoring...");
+                break;
+              }
+
+              String roomName = roomNameAndTemperature[0];
+              Double temperature = Double.parseDouble(roomNameAndTemperature[1]);
+
+              roomsTemperature.put(roomName, temperature);
+            } catch (NumberFormatException e) {
               System.out.println("[Receiver] Invalid message, ignoring...");
-              break;
             }
-
-            String roomName = roomNameAndTemperature[0];
-            Double temperature = Double.parseDouble(roomNameAndTemperature[1]);
-
-            roomsTemperature.put(roomName, temperature);
           }
           case null, default -> System.out.println("[Receiver] Invalid message, ignoring...");
         }

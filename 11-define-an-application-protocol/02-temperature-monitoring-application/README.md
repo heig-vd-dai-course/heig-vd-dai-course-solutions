@@ -127,9 +127,9 @@ error message to the operator.
 
 ![Invalid temperature example](./images/example-2-invalid-temperature.png)
 
-### Request temperature errors example
+### Request unknown room temperature example
 
-![Request temperature errors example](./images/example-3-request-temperature-errors.png)
+![Request temperature errors example](./images/example-3-request-unkown-room-temperature.png)
 
 ### Invalid command example
 

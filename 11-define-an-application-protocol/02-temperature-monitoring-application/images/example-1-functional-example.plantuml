@@ -16,13 +16,13 @@ periodically.
 end note
 
 e1 --> e1: <&clock> ... <&clock> ... <&clock> ...
-e1 -[#red]> s: TEMP 1 21
+e1 -[#red]> s: TEMP Kitchen 21.2
 s -> s: Store the room's temperature
 
 ...
 
 e2 --> e2: <&clock> ... <&clock> ... <&clock> ...
-e2 -[#red]> s: TEMP 2 18
+e2 -[#red]> s: TEMP Bedroom 18.4
 s -> s: Store the room's temperature
 
 ...
@@ -36,8 +36,8 @@ temperature at
 any time.
 end note
 
-o -[#blue]> s: REQ_TEMP 2
-s -[#blue]> o: TEMP 18
+o -[#blue]> s: REQ_TEMP Bedroom
+s -[#blue]> o: TEMP 18.4
 
 legend
 **Legend**
