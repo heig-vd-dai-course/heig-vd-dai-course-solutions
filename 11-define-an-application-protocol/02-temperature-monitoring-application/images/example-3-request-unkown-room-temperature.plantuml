@@ -1,6 +1,6 @@
-@startuml request-temperature-errors
+@startuml request-unkown-room-temperature
 
-title "Request temperature errors example"
+title "Request unkown room temperature example"
 
 participant "Emitter 1" as e1
 participant "Emitter 2" as e2
@@ -10,18 +10,13 @@ participant "Operator" as o
 == Emit temperature ==
 
 e1 --> e1: <&clock> ... <&clock> ... <&clock> ...
-e1 -[#red]> s: TEMP 1 21
+e1 -[#red]> s: TEMP Kitchen 21.2
 s -> s: Store the room's temperature
-
-== Request temperature of an invalid number ==
-
-o -[#blue]> s: REQ_TEMP a
-s -[#blue]> o: ERROR 1
 
 == Request temperature of an unknown room ==
 
-o -[#blue]> s: REQ_TEMP 2
-s -[#blue]> o: ERROR 2
+o -[#blue]> s: REQ_TEMP Garage
+s -[#blue]> o: ERROR 1
 
 legend
 **Legend**

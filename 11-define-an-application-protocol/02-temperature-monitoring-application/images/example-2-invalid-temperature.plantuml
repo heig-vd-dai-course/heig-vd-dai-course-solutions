@@ -10,7 +10,7 @@ participant "Operator" as o
 == Emit invalid temperature ==
 
 e1 --> e1: <&clock> ... <&clock> ... <&clock> ...
-e1 -[#red]> s: TEMP 1 a
+e1 -[#red]> s: TEMP Bedroom a
 
 note over s
 The server does
