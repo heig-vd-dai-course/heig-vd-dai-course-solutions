@@ -1,15 +1,13 @@
-package ch.heigvd;
+package ch.heigvd.dai;
 
-import ch.heigvd.auth.AuthController;
-import ch.heigvd.users.User;
-import ch.heigvd.users.UsersController;
+import ch.heigvd.dai.auth.AuthController;
+import ch.heigvd.dai.users.User;
+import ch.heigvd.dai.users.UsersController;
 import io.javalin.Javalin;
-
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Main {
-
-  public final static int PORT = 8080;
+  public static final int PORT = 8081;
 
   public static void main(String[] args) {
     Javalin app = Javalin.create();
