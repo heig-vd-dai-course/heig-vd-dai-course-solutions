@@ -6,12 +6,19 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class AuthController {
   private final ConcurrentHashMap<Integer, User> users;
+  private final ConcurrentHashMap<Integer, Integer> usersCache = new ConcurrentHashMap<>();
 
   public AuthController(ConcurrentHashMap<Integer, User> users) {
     this.users = users;
   }
 
   public void login(Context ctx) {
+    Integer etag = ctx.headerAsClass("If-None-Match", Integer.class).getOrDefault(null);
+
+    if (etag != null && usersCache.containsValue(etag)) {
+      throw new NotModifiedResponse();
+    }
+
     User loginUser =
         ctx.bodyValidator(User.class)
             .check(obj -> obj.email != null, "Missing email")
@@ -19,8 +26,13 @@ public class AuthController {
             .get();
 
     for (User user : users.values()) {
-      if (user.email.equals(loginUser.email) && user.password.equals(loginUser.password)) {
-        ctx.cookie("user", user.id.toString());
+      if (user.email.equalsIgnoreCase(loginUser.email)
+          && user.password.equals(loginUser.password)) {
+        Integer userHash = user.hashCode();
+        usersCache.put(user.id, userHash);
+
+        ctx.cookie("user", String.valueOf(user.id));
+        ctx.header("ETag", String.valueOf(userHash));
         ctx.status(HttpStatus.NO_CONTENT);
         return;
       }
@@ -41,12 +53,21 @@ public class AuthController {
       throw new UnauthorizedResponse();
     }
 
+    Integer etag = ctx.headerAsClass("If-None-Match", Integer.class).getOrDefault(null);
+
+    if (etag != null && usersCache.get(Integer.parseInt(userId)).equals(etag)) {
+      throw new NotModifiedResponse();
+    }
     User user = users.get(Integer.parseInt(userId));
 
     if (user == null) {
       throw new UnauthorizedResponse();
     }
 
+    Integer userHash = user.hashCode();
+    usersCache.put(user.id, userHash);
+
+    ctx.header("ETag", String.valueOf(userHash));
     ctx.json(user);
   }
 }
