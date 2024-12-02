@@ -19,8 +19,9 @@ public class AuthController {
             .get();
 
     for (User user : users.values()) {
-      if (user.email.equals(loginUser.email) && user.password.equals(loginUser.password)) {
-        ctx.cookie("user", user.id.toString());
+      if (user.email.equalsIgnoreCase(loginUser.email)
+          && user.password.equals(loginUser.password)) {
+        ctx.cookie("user", String.valueOf(user.id));
         ctx.status(HttpStatus.NO_CONTENT);
         return;
       }

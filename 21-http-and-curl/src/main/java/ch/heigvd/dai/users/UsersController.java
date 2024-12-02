@@ -8,7 +8,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class UsersController {
   private final ConcurrentHashMap<Integer, User> users;
-  private final AtomicInteger userId = new AtomicInteger();
+  private final AtomicInteger userId = new AtomicInteger(1);
 
   public UsersController(ConcurrentHashMap<Integer, User> users) {
     this.users = users;
@@ -24,7 +24,7 @@ public class UsersController {
             .get();
 
     for (User user : users.values()) {
-      if (user.email.equals(newUser.email)) {
+      if (user.email.equalsIgnoreCase(newUser.email)) {
         throw new ConflictResponse();
       }
     }
@@ -44,12 +44,13 @@ public class UsersController {
   }
 
   public void getOne(Context ctx) {
-    Integer id =
-        ctx.pathParamAsClass("id", Integer.class)
-            .check(userId -> users.get(userId) != null, "User not found")
-            .getOrThrow(message -> new NotFoundResponse());
+    Integer id = ctx.pathParamAsClass("id", Integer.class).get();
 
     User user = users.get(id);
+
+    if (user == null) {
+      throw new NotFoundResponse();
+    }
 
     ctx.json(user);
   }
@@ -61,11 +62,11 @@ public class UsersController {
     List<User> users = new ArrayList<>();
 
     for (User user : this.users.values()) {
-      if (firstName != null && !user.firstName.equals(firstName)) {
+      if (firstName != null && !user.firstName.equalsIgnoreCase(firstName)) {
         continue;
       }
 
-      if (lastName != null && !user.lastName.equals(lastName)) {
+      if (lastName != null && !user.lastName.equalsIgnoreCase(lastName)) {
         continue;
       }
 
@@ -76,10 +77,7 @@ public class UsersController {
   }
 
   public void update(Context ctx) {
-    Integer id =
-        ctx.pathParamAsClass("id", Integer.class)
-            .check(userId -> users.get(userId) != null, "User not found")
-            .getOrThrow(message -> new NotFoundResponse());
+    Integer id = ctx.pathParamAsClass("id", Integer.class).get();
 
     User updateUser =
         ctx.bodyValidator(User.class)
@@ -90,6 +88,10 @@ public class UsersController {
             .get();
 
     User user = users.get(id);
+
+    if (user == null) {
+      throw new NotFoundResponse();
+    }
 
     user.firstName = updateUser.firstName;
     user.lastName = updateUser.lastName;
@@ -102,10 +104,11 @@ public class UsersController {
   }
 
   public void delete(Context ctx) {
-    Integer id =
-        ctx.pathParamAsClass("id", Integer.class)
-            .check(userId -> users.get(userId) != null, "User not found")
-            .getOrThrow(message -> new NotFoundResponse());
+    Integer id = ctx.pathParamAsClass("id", Integer.class).get();
+
+    if (!users.containsKey(id)) {
+      throw new NotFoundResponse();
+    }
 
     users.remove(id);
 
