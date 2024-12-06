@@ -4,20 +4,33 @@ import ch.heigvd.dai.auth.AuthController;
 import ch.heigvd.dai.users.User;
 import ch.heigvd.dai.users.UsersController;
 import io.javalin.Javalin;
+import java.time.LocalDateTime;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Main {
   public static final int PORT = 8081;
 
   public static void main(String[] args) {
-    Javalin app = Javalin.create();
+    Javalin app =
+        Javalin.create(
+            // Add custom configuration to Javalin
+            config -> {
+              // This will allow us to parse LocalDateTime
+              config.validation.register(LocalDateTime.class, LocalDateTime::parse);
+            });
 
     // This will serve as our database
     ConcurrentHashMap<Integer, User> users = new ConcurrentHashMap<>();
 
+    // This will serve as our cache
+    //
+    // The key is to identify the user(s)
+    // The value is the last modification time of the user(s)
+    ConcurrentHashMap<Integer, LocalDateTime> usersCache = new ConcurrentHashMap<>();
+
     // Controllers
-    AuthController authController = new AuthController(users);
-    UsersController usersController = new UsersController(users);
+    AuthController authController = new AuthController(users, usersCache);
+    UsersController usersController = new UsersController(users, usersCache);
 
     // Auth routes
     app.post("/login", authController::login);

@@ -1,7 +1,7 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Start the application" type="Application" factoryName="Application">
     <option name="MAIN_CLASS_NAME" value="ch.heigvd.dai.Main" />
-    <module name="21-http-and-curl" />
+    <module name="caching-and-performance" />
     <method v="2">
       <option name="Make" enabled="true" />
     </method>
