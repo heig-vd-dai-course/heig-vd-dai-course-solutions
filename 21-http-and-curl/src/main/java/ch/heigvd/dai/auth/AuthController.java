@@ -36,13 +36,15 @@ public class AuthController {
   }
 
   public void profile(Context ctx) {
-    String userId = ctx.cookie("user");
+    String userIdCookie = ctx.cookie("user");
 
-    if (userId == null) {
+    if (userIdCookie == null) {
       throw new UnauthorizedResponse();
     }
 
-    User user = users.get(Integer.parseInt(userId));
+    Integer userId = Integer.parseInt(userIdCookie);
+
+    User user = users.get(userId);
 
     if (user == null) {
       throw new UnauthorizedResponse();
